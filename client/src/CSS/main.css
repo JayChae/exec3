@@ -1,0 +1,18 @@
+a{
+    text-decoration: none;
+    cursor: pointer;
+    color:#000
+}
+
+.main-page{
+    display: flex;
+    
+}
+
+.main{
+    
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}

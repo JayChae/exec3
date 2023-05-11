@@ -1,0 +1,137 @@
+foreignObject {
+    position: relative;
+}
+
+.department {
+    width: 240px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #ccc;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 5px;
+    
+    position: absolute;
+    top: 5px;
+    left: 20px
+}
+
+.department-name.editable:hover {
+    text-shadow: 0 0 3px gray;
+}
+
+.boarding-card {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+
+    margin-top: 15px;
+    max-width: 250px;
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.icons {
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    background-color: #d6d6d6;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.icons.editable:hover {
+    box-shadow: 0 0 4px gray;
+}
+
+.text-box {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-left: 5px;
+    max-width: 150px;
+    max-height: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.boarding-name {
+    min-width: 18px;
+    min-height: 18px;
+    font-size: 18px;
+    font-weight: bolder;
+    margin-right: 4px;
+}
+
+.boarding-name.editable:hover {
+    text-shadow: 0 0 3px gray;
+}
+
+.boarding-state {
+    min-width: 18px;
+    min-height: 18px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.boarding-state.editable:hover {
+    text-shadow: 0 0 3px gray;
+}
+
+
+.boarding-description {
+    min-width: 140px;
+    min-height: 13px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.boarding-description.editable:hover {
+    text-shadow: 0 0 3px gray;
+}
+
+.add {
+    position: absolute;
+    bottom: -10px;
+    right: 50%;
+    transform: translateX(50%) scale(1.5);
+    background-color: black;
+    padding: 1px;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+}
+
+.delete {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    transform: translateX(50%) scale(1.5);
+    width: 10%;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.swap{
+    position: absolute;
+    top: 45%;
+    right: -10%;
+    transform: translateX(50%) scale(1.8);
+    width: 10%;
+    border: none;
+    color: green;
+    cursor: pointer;
+
+
+}

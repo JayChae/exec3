@@ -10,8 +10,6 @@ const bodyParser = require("body-parser");
 const db = require("./config/db");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const bcrypt = require("bcryptjs");
-const saltRounds = 10;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -36,28 +34,24 @@ const { v4: uuid } = require("uuid");
 const fs = require("fs-extra");
 const nodemailer = require("nodemailer");
 
-// 회원가입
+// 회원가입하기
 app.post("/api/register", (req, res) => {
   const inputId = req.body.inputId;
   const inputPw = req.body.inputPw;
   const inputName = req.body.inputName;
 
-  bcrypt.hash(inputPw, saltRounds, (err, hash) => {
+  const sql =
+    "INSERT INTO Login (user_id, user_password,user_name, user_type) VALUES (?,?,?,'mentee');";
+  db.query(sql, [inputId, inputPw, inputName], (err, result) => {
     if (err) {
-      res.send({ err_message: "bcrypt 오류" });
+      res.send({ err_message: "Insert 오류" });
+    } else {
+      res.send(result);
     }
-
-    const sql =
-      "INSERT INTO Login (user_id, user_password,user_name, user_type) VALUES (?,?,?,'mentee');";
-    db.query(sql, [inputId, hash, inputName], (err, result) => {
-      if (err) {
-        res.send({ err_message: "Insert 오류" });
-      } else {
-        res.send(result);
-      }
-    });
   });
 });
+
+// 회원가입 이메일 중복체크
 app.post("/api/register/duplication_check", (req, res) => {
   const inputId = req.body.inputId;
 
@@ -66,6 +60,8 @@ app.post("/api/register/duplication_check", (req, res) => {
     res.send(result);
   });
 });
+
+// 회원가입 이메일 인증
 app.post("/api/register/nodemailer", (req, res) => {
   const inputId = req.body.inputId;
   const authNum = Math.random().toString().substr(2, 6);
@@ -96,7 +92,7 @@ app.post("/api/register/nodemailer", (req, res) => {
   });
 });
 
-// 로그인
+// 로그인하기
 app.post("/api/login", (req, res) => {
   const inputId = req.body.inputId;
   const inputPw = req.body.inputPw;
@@ -108,20 +104,18 @@ app.post("/api/login", (req, res) => {
     }
 
     if (result.length > 0) {
-      bcrypt.compare(inputPw, result[0].user_password, (error, response) => {
-        if (response) {
-          req.session.user = result[0];
-          res.send(result);
-        } else {
-          res.send({ errMessage: "잘못된비밀번호입니다" });
-        }
-      });
+      if (inputPw === result[0].user_password) {
+        req.session.user = result[0];
+        res.send(result);
+      } else {
+        res.send({ errMessage: "잘못된비밀번호입니다" });
+      }
     } else {
       res.send({ errMessage: "잘못된 아이디입니다." });
     }
   });
 });
-
+// 로그인 확인
 app.get("/api/login", (req, res) => {
   console.log("Login", req.session.user);
   if (req.session.user) {
@@ -131,6 +125,7 @@ app.get("/api/login", (req, res) => {
   }
 });
 
+//로그아웃 하기
 app.post("/logout", (req, res) => {
   console.log("logout");
   req.session.destroy((err) => {
@@ -142,50 +137,6 @@ app.post("/logout", (req, res) => {
   });
 });
 
-//Google
-app.post("/login", (req, res) => {
-  const email = req.body.email;
-  const user_name = req.body.user_name;
-  const picture = req.body.picture;
-
-  const sql = "SELECT * FROM Member WHERE Email = ?;";
-  db.query(sql, email, (err, result) => {
-    if (err) {
-      res.send({ err_message: "Member DB 오류", err: err });
-    }
-
-    if (result.length > 0) {
-      const type = result[0].Type;
-      console.log(" existing MEMBER");
-      const user = {
-        email: email,
-        user_name: user_name,
-        picture: picture,
-        type: type,
-      };
-      req.session.user = user;
-      res.send(user);
-    } else {
-      console.log("NEW MEMBER");
-      const user = {
-        email: email,
-        user_name: user_name,
-        picture: picture,
-        type: "mentee",
-      };
-      req.session.user = user;
-      const sql =
-        "INSERT INTO Member (Email, User_name,Picture,Type) VALUES (?,?,?,'mentee');";
-      db.query(sql, [email, user_name, picture], (err, result) => {
-        if (err) {
-          res.send({ err_message: "Insert 오류", err: err });
-        } else {
-          res.send("새로운 멤버 등록 완료");
-        }
-      });
-    }
-  });
-});
 
 //이미지 업로드
 const storage = multer.diskStorage({
@@ -223,7 +174,6 @@ app.post("/api/upload/:userId", upload.single("file"), (req, res) => {
 
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
-//NEW MISSION
 function getImageFileNames(content) {
   const imgTags = content.match(/<img[^>]+src=["']([^"']+)["']/g);
   if (!imgTags) return [];
@@ -234,10 +184,25 @@ function getImageFileNames(content) {
   });
 }
 
-app.post("/new_mission", async (req, res) => {
+//임시로 올린 사진 삭제
+app.post("/api/temp_delete/:userId", (req, res) => {
+  const path = `./images/temp/${req.params.userId}`;
+  try {
+    console.log("디렉토리 삭제");
+    fs.existsSync(path) && fs.removeSync(path); // (1)
+    res.status(200).json("디렉토리를 성공적으로 삭제하였습니다.");
+  } catch (err) {
+    throw new Error(err.message);
+  }
+});
+
+//새로운 업무 등록
+app.post("/new_BQ", async (req, res) => {
   const title = req.body.title;
   let content = req.body.content;
   const input_time = req.body.input_time;
+  const userId = req.body.userId;
+  const solved =false;
 
   const imageFileNames = getImageFileNames(content);
   const promises = [];
@@ -281,34 +246,101 @@ app.post("/new_mission", async (req, res) => {
   }
 
   const sql =
-    "INSERT INTO Mission (Title, Content, Input_time) VALUES (?,?,?);";
-  db.query(sql, [title, content, input_time], (err, result) => {
+    "INSERT INTO BQ (Title, Content, Input_time,userId,solved) VALUES (?,?,?,?,?);";
+  db.query(sql, [title, content, input_time,userId,solved], (err, result) => {
     if (err) {
       res.send({ errMessage: "등록에 실패하였습니다", err: err });
     } else {
-      const sql =
-        "UPDATE Login SET next_mission = ? WHERE next_mission ='No More';";
-      db.query(sql, [input_time], (err, result) => {
-        if (err) {
-          res.send({ err_message: "UPdate 오류" });
-        } else {
-          res.send("새로운 미션이 등록되었습니다");
-        }
-      });
+      res.send("새로운 업무가 등록되었습니다");
     }
   });
 });
 
-app.post("/api/temp_delete/:userId", (req, res) => {
-  const path = `./images/temp/${req.params.userId}`;
-  try {
-    console.log("디렉토리 삭제");
-    fs.existsSync(path) && fs.removeSync(path); // (1)
-    res.status(200).json("디렉토리를 성공적으로 삭제하였습니다.");
-  } catch (err) {
-    throw new Error(err.message);
-  }
+//get_BQ_list
+app.get("/get_unsolved_BQ_list", (req, res) => {
+  const userId = req.query.userId;
+  const solved = false;
+  const sql = "SELECT Title, Input_time FROM BQ WHERE userId = ? AND solved = ?;";
+  db.query(sql, [userId,solved], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
 });
+app.get("/get_solved_BQ_list", (req, res) => {
+  const userId = req.query.userId;
+  const solved = true;
+  const sql = "SELECT Title, Input_time FROM BQ WHERE userId = ? AND solved = ?;";
+  db.query(sql, [userId,solved], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
+});
+//get_BQ_detail
+app.post("/get_BQ_detail", (req, res) => {
+  const userId = req.body.userId;
+  const Input_time = req.body.Input_time;
+  const sql = "SELECT * FROM BQ WHERE userId = ? AND Input_time = ?;";
+  db.query(sql, [userId,Input_time], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/get_BA_list", (req, res) => {
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const sql = "SELECT * FROM BA WHERE userId = ? AND BQ = ?;";
+  db.query(sql, [userId,BQ], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.post("/BQ_get_solved", (req, res) => {
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const solved = true;
+  const sql = "UPDATE BQ SET solved = ? WHERE Input_time =? AND userID = ?;";
+  db.query(sql, [solved, BQ,userId], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      res.send("완료되었습니다");
+    }
+  });
+});
+
+//댓글 달기
+app.post("/BQ_reply", async (req, res) => {
+
+  const content = req.body.content;
+  const input_time = req.body.input_time;
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+
+   const sql =
+    "INSERT INTO BA (Content, Input_time,userId,BQ) VALUES (?,?,?,?);";
+  db.query(sql, [content, input_time,userId,BQ], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "등록에 실패하였습니다", err: err });
+    } else {
+      res.send("댓글이 등록되었습니다");
+    }
+  });
+
+});
+
 
 //delete mission
 const deleteFile = (fileName) => {
@@ -434,19 +466,9 @@ app.post("/edit_mission", async (req, res) => {
   });
 });
 
-//get mission
-app.get("/get_mission", (req, res) => {
-  const input_time = req.query.input_time;
 
-  const sql = "SELECT * FROM Mission WHERE Input_time = ?;";
-  db.query(sql, input_time, (err, result) => {
-    if (err) {
-      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
-    } else {
-      res.send(result);
-    }
-  });
-});
+
+
 
 //mission list
 app.get("/mission_list_done", (req, res) => {
@@ -685,10 +707,8 @@ app.get("/waiting", (req, res) => {
 app.get("/org_chart", (req, res) => {
   const userId = req.query.userId;
 
-  const sql =
-    "SELECT * FROM OrgChart WHERE userId = ? ORDER BY Date DESC;";
+  const sql = "SELECT * FROM OrgChart WHERE userId = ? ORDER BY Date DESC;";
   db.query(sql, [userId], (err, result) => {
-
     if (err) {
       res.send({ errMessage: "조직도을 불러오지 못 했습니다", err: err });
     } else {
@@ -702,7 +722,6 @@ app.get("/recent_org_chart", (req, res) => {
   const sql =
     "SELECT * FROM OrgChart WHERE userId = ? ORDER BY Date DESC Limit 1;";
   db.query(sql, [userId], (err, result) => {
-
     if (err) {
       res.send({ errMessage: "조직도을 불러오지 못 했습니다", err: err });
     } else {
@@ -713,10 +732,8 @@ app.get("/recent_org_chart", (req, res) => {
 app.get("/org_chart", (req, res) => {
   const userId = req.query.userId;
 
-  const sql =
-    "SELECT * FROM OrgChart WHERE userId = ? ORDER BY Date DESC;";
+  const sql = "SELECT * FROM OrgChart WHERE userId = ? ORDER BY Date DESC;";
   db.query(sql, [userId], (err, result) => {
-
     if (err) {
       res.send({ errMessage: "조직도을 불러오지 못 했습니다", err: err });
     } else {
@@ -724,8 +741,6 @@ app.get("/org_chart", (req, res) => {
     }
   });
 });
-
-
 
 app.post("/org_chart_date_change", (req, res) => {
   const date = req.body.date;
@@ -773,8 +788,9 @@ app.post("/new_orgChart", (req, res) => {
   const userId = req.body.userId;
   const Title = req.body.Title;
 
-  const sql = "INSERT INTO OrgChart (Date, TreeData, userId,Title) VALUES (?,?,?,?);";
-  db.query(sql, [Date, TreeData, userId,Title], (err, result) => {
+  const sql =
+    "INSERT INTO OrgChart (Date, TreeData, userId,Title) VALUES (?,?,?,?);";
+  db.query(sql, [Date, TreeData, userId, Title], (err, result) => {
     if (err) {
       res.send("저장되지 않았습니다");
     } else {
@@ -783,14 +799,14 @@ app.post("/new_orgChart", (req, res) => {
   });
 });
 
-
 app.post("/edit_orgChart", (req, res) => {
   const TreeData = req.body.treeData;
   const Date = req.body.Date;
   const userId = req.body.userId;
   const Title = req.body.Title;
 
-  const sql = "UPDATE OrgChart SET TreeData = ?, Title = ? WHERE userId =? AND Date = ?;";
+  const sql =
+    "UPDATE OrgChart SET TreeData = ?, Title = ? WHERE userId =? AND Date = ?;";
   db.query(sql, [TreeData, Title, userId, Date], (err, result) => {
     if (err) {
       res.send("수정되지 않았습니다");
@@ -805,17 +821,15 @@ app.post("/delete_orgChart", (req, res) => {
   const userId = req.body.userId;
 
   const sql = "DELETE FROM OrgChart WHERE Date = ? AND userId = ?";
-  db.query(sql, [Date,userId], (err, result) => {
+  db.query(sql, [Date, userId], (err, result) => {
     if (err) {
-      console.log("errrr",err);
+      console.log("errrr", err);
       res.send("삭제되지 않았습니다");
     } else {
       res.send("삭제되었습니다");
     }
   });
 });
-
-
 
 const PORT = 5000;
 app.listen(PORT, () => {

@@ -1,0 +1,65 @@
+/* Styling for the sidebar */
+
+.sidebar-container{
+  height: 100vh;
+
+}
+
+
+
+
+  
+  /* Styling for the settings icon and logout button */
+  .settings-container {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .settings {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .settings:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .settings .setting_icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .logout-container {
+    position: absolute;
+    bottom: 50px;
+    left: 30px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .logout-container p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .logout-container p:hover {
+    color: #333333;
+  }
+  

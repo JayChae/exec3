@@ -1,0 +1,47 @@
+/* Center the initial container */
+.initial-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Style the initial greeting */
+.initial-greeting {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Style the initial instruction */
+.initial-instruction {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Style the login and signup buttons */
+.initial-button button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+.initial-button button:hover {
+  background-color: #0062cc;
+}
+
+/* Optional: make the buttons full width on smaller screens */
+@media (max-width: 768px) {
+  button {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
