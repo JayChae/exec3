@@ -84,19 +84,18 @@ function Register(){
     return (
         <div className="register-page">
             <div className="register-section">
-              <h3>Create an account</h3>
-              <div className="register-form">
+              <h1>계정 생성</h1>
                 <input
                   type="text"
+                  className="register-form"
                   onChange={(e) => {
                     setInputName(e.target.value);
                   }}
                   placeholder="성함"
                 />
-              </div>
-              <div className="register-form">
                 <input
                   type="text"
+                  className="register-form"
                   onChange={(e) => {
                     if(isEmail(e.target.value)){
                       setValidateIdMessage('')
@@ -106,22 +105,19 @@ function Register(){
                     else{
                       setValidateIdStatus(false);
                       setValidateIdMessage("올바른 이메일 형식이 아닙니다")
-                      
                     }
                   }}
-                  placeholder="아이디:이메일을 입력해 주세요"
+                  placeholder="이메일"
                 />
-                <p>{validateIdSMessage}</p>
-                <div className="id-duplication-check">
+                {validateIdSMessage ? <p>{validateIdSMessage}</p> : null}
                   <button
                   onClick={duplication_check}
-                  className="id-duplication-check-button">이메일 중복 확인하기</button>
-                </div>
-                  <p>{validateDuplicationMessage}</p> 
-              </div>
-              <div className="register-form">
+                  className="id-duplication-check-button">이메일 중복 확인하기
+                  </button>
+                  {validateDuplicationMessage ? <p>{validateDuplicationMessage}</p> : null}
                 <input
-                  type="password"
+                  type="text"
+                  className="register-form"
                   onChange={(e) => {
                     if(isAscii(e.target.value)&&isLength(e.target.value,{min:3, max: 15})){
                       setValidatePwMessage('')
@@ -136,11 +132,10 @@ function Register(){
                   }}
                   placeholder="비밀번호"
                 />
-                <p>{validatePwSMessage}</p>
-              </div>
-              <div className="register-form">
+                {validatePwSMessage ? <p>{validatePwSMessage}</p> : null}
                 <input
-                  type="password"
+                  type="text"
+                  className="register-form"
                   onChange={(e) => {
                     if(e.target.value===inputPw){
                       setCheckPwMessage('비밀번호가 일치합니다')
@@ -149,13 +144,11 @@ function Register(){
                     else{
                       setCheckPwMessage('비밀번호가 일치하지 않습니다')
                       setCheckPwStatus(false);
-                      
                     }
                   }}
                   placeholder="비밀번호 확인"
                 />
-                <p>{checkPwMessage}</p>
-              </div>
+                {checkPwMessage ? <p>{checkPwMessage}</p> : null}
               <div className="register_in">
                 <button onClick={register} className="register-btn">가입하기</button>
               </div>

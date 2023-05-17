@@ -1,5 +1,4 @@
 .detailQ-container{
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,22 +8,21 @@
 }
 
 .detailQ-header{
-    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .detailQ-header h1{
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: 500;
     margin-bottom: 10px;
-
 }
 
-.detailQ-solveBtn{
-    text-align: end;
-}
-
-.detailQ-solveBtn button{
-     background-color: #007bff;
+.submit-button{
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -34,7 +32,7 @@
     border-radius: 4px;
 }
 
-.detailQ-solveBtn button:hover{
+.submit-button:hover{
      background-color: #0062cc;
 }
 
@@ -44,16 +42,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
 }
-
 
 .detailQ-question{
     width: 100%;
     background-color: #f2f2f2;
-    padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 7px;
+}
+
+.detailQ-question p{
+    padding: 20px;    
 }
 
 .detailQ-comment{
@@ -65,9 +65,15 @@
 }
 
 .reply-section{
-   padding:10px;
-    width: 100%;
+  padding: 10px;
+  width: 100%;
+  overflow: hidden;
 }
+
+.reply-section button{
+    margin-top: 10px;
+    float: right;
+ }
 
 .ck-media__wrapper{
     clear: both;
@@ -79,7 +85,6 @@
 .media.ck-widget{
     width: 50px;
 }
-
 
 .reply-section .ck-editor__editable {
     min-height: 250px;

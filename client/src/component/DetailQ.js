@@ -69,10 +69,7 @@ const DetailQ = ({ Input_time, userId }) => {
     <div className="detailQ-container">
       <div className="detailQ-header">
         <h1>{QuestionTitle}</h1>
-        <div className="detailQ-solveBtn">
-          {solvedStatus ? <h2>완료됨</h2>:<button onClick={get_solved}>완료하기</button>}
-         
-        </div>
+        {solvedStatus ? <h2>완료됨</h2>:<button className="submit-button" onClick={get_solved}>완료하기</button>}
       </div>
       <div className="detailQ-board">
         <div className="detailQ-question">{parse(QuestionContent)}</div>
@@ -80,7 +77,7 @@ const DetailQ = ({ Input_time, userId }) => {
       </div>
       <div className="reply-section">
         <TextEditor setContent={setReply} />
-        <button onClick={save_reply}>댓글 등록하기</button>
+        <button className="submit-button" onClick={save_reply}>댓글 등록하기</button>
       </div>
     </div>
   );

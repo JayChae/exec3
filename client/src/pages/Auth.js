@@ -41,12 +41,10 @@ const Auth = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     인증번호:
-                    <input type="text" value={inputCode} onChange={(event)=>{setInputCode(event.target.value);}} />
+                    <input type="text" className="auth-form" value={inputCode} onChange={(event)=>{setInputCode(event.target.value);}} />
                 </label>
-                <button type="submit">인증하기</button>
+                <button type="submit" className='auth-button'>인증하기</button>
             </form>
-        </div>
-        <div className='get-auhCode-container'>
             <a className='get-authCode'  onClick={getAuthCode}>이메일 인증번호 받기</a>
         </div>
     </div>

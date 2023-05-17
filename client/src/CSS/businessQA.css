@@ -7,19 +7,18 @@
   }
 
   .BusinessQA-header{
-    width: 80%;
+    width: 100%;
   }
   
   .BusinessQA-header h2 {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
     margin-bottom: 10px;
   }
 
   .BusinessQA-addBtn{
-    width: 80%;
+    width: 100%;
     text-align: end;
-    
   }
   
   .BusinessQA-addBtn button {
@@ -45,60 +44,55 @@
   .BusinessQA-board-statusBtn {
     display: flex;
     justify-content:start;
-    margin-bottom: 10px;
-    
   }
   
   .BusinessQA-board-statusBtn button {
+    width: 70px;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    margin: 0 40px;
+    background-color: white;
+  }
+  
+  .BusinessQA-board-statusBtn button:hover{
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
   }
 
-  
-  .BusinessQA-board-statusBtn button:first-child {
-    border-radius: 5px 5px;
-    width: 90px;
-  }
-  
-  .BusinessQA-board-statusBtn button:last-child {
-    border-radius: 5px 5px;
-    width: 90px;
-
-  }
-  
-  .BusinessQA-board-statusBtn button:hover {
-   background-color: #007bff;
+  .BusinessQA-board-statusBtn button.chosen{
+    color: #007bff;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid #007bff;
   }
   
   .BusinessQA-board-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  
-  .chosen{
-    color: white;
-   background-color: #007bff;
+    background-color: #ffffff;
+    padding: 0px 20px;
+    /* border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
   }
 
   .BusinessQuestion{
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     padding: 20px;
     background-color: white;
-    margin: 10px;
-    border-style: solid;
+    border-bottom: 1px solid gray;
     justify-content: space-between;
   }
+
+  .BusinessQuestion:hover{
+    background-color: #f2f2f2;
+  }
+
 
   .BusinessQuestion-Time{
     

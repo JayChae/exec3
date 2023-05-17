@@ -24,25 +24,25 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   label {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
   }
   
-  input[type="text"] {
-    width: 100%;
+  .auth-form {
+    margin-left: 5px;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 3px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
   }
   
-  button[type="submit"] {
+  .auth-button {
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -53,7 +53,7 @@
     cursor: pointer;
   }
   
-  button[type="submit"]:hover {
+  .auth-button:hover {
     background-color: #2d76e1;
   }
   

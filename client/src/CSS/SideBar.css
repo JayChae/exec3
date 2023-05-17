@@ -1,14 +1,9 @@
 /* Styling for the sidebar */
 
 .sidebar-container{
-  height: 100vh;
-
+  min-height: 100vh;
 }
 
-
-
-
-  
   /* Styling for the settings icon and logout button */
   .settings-container {
     position: absolute;

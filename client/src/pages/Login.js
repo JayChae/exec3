@@ -3,6 +3,7 @@ import { useState } from "react";
 import {Link,} from 'react-router-dom';
 import { server_url } from '../config/url';
 import Axios from 'axios'
+import '../CSS/login.css'
 
 const Login = () => {
 
@@ -31,37 +32,33 @@ const Login = () => {
       <div className="login-section">
         <div className="login-title">LOGIN</div>
         <form onSubmit={login}>
-          <div className="login-form">
-            <input
-              type="text"
-              onChange={(e) => {
-                setInputId(e.target.value);
-              }}
-              required
-              placeholder="아이디: 이메일을 입력해 주세요"
-            />
-          </div>
-          <div className="login-form">
-            <input
-              type="password"
-              onChange={(e) => {
-                setInputPw(e.target.value);
-              }}
-              required
-              placeholder="비밀번호"
-            />
-          </div>
+          <input
+            type="text"
+            className="login-form"
+            onChange={(e) => {
+              setInputId(e.target.value);
+            }}
+            required
+            placeholder="이메일"
+          />
+          <input
+            type="password"
+            className="login-form"
+            onChange={(e) => {
+              setInputPw(e.target.value);
+            }}
+            required
+            placeholder="비밀번호"
+          />
           <p>{errMessage}</p>
-          <div className="register-btn">
-            <Link to="/register">회원가입</Link>
-          </div>
-          <div className="login-button">
             <button
               type="submit"
               className="login-btn"
             >
               로그인
             </button>
+          <div className="register-btn">
+            <Link to="/register">회원가입</Link>
           </div>
         </form>
       </div>
