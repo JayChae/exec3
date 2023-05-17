@@ -7,12 +7,16 @@ import Auth from "./pages/Auth";
 import Main from "./pages/Main";
 import NewOrg from "./pages/NewOrg";
 import EditOrg from "./pages/EditOrg";
+import MentorMain from "./mentor/MentorMain"
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Initial />} />
+        <Route exact path="/mentor/:userId/:selectMenu" element={<MentorMain />} />
+        <Route exact path="/mentor/:userId/:selectMenu/:Input_time" element={<MentorMain />} />
+        <Route exact path="/mentor/:userId/:menteeID/:selectMenu/:Input_time" element={<MentorMain />} />
         <Route exact path="/:userId" element={<Main />} />
         <Route exact path="/:userId/:selectMenu" element={<Main />} />
         <Route exact path="/:userId/:selectMenu/:Input_time" element={<Main />} />

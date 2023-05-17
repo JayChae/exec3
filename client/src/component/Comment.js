@@ -3,7 +3,7 @@ import parse from "html-react-parser";
 
 const Comment = ({reply,userId}) => {
   return (
-    <div className={reply.userId===userId ? "detailQ-question":"detailQ-comment"}>{reply.user}{parse(reply.Content)}</div>
+    <div className={reply.commenterId===userId ? "detailQ-question":"detailQ-comment"}>{reply.commenterName}{parse(reply.Content)}</div>
   )
 }
 
