@@ -202,6 +202,7 @@ app.post("/new_BQ", async (req, res) => {
   let content = req.body.content;
   const input_time = req.body.input_time;
   const userId = req.body.userId;
+  const userName = req.body.userName;
   const solved =false;
 
   const imageFileNames = getImageFileNames(content);
@@ -246,8 +247,8 @@ app.post("/new_BQ", async (req, res) => {
   }
 
   const sql =
-    "INSERT INTO BQ (Title, Content, Input_time,userId,solved) VALUES (?,?,?,?,?);";
-  db.query(sql, [title, content, input_time,userId,solved], (err, result) => {
+    "INSERT INTO BQ (Title, Content, Input_time,userId,solved,userName) VALUES (?,?,?,?,?,?);";
+  db.query(sql, [title, content, input_time,userId,solved,userName], (err, result) => {
     if (err) {
       res.send({ errMessage: "등록에 실패하였습니다", err: err });
     } else {
@@ -260,8 +261,20 @@ app.post("/new_BQ", async (req, res) => {
 app.get("/get_unsolved_BQ_list", (req, res) => {
   const userId = req.query.userId;
   const solved = false;
-  const sql = "SELECT Title, Input_time FROM BQ WHERE userId = ? AND solved = ?;";
+  const sql = "SELECT Title, Input_time,userName FROM BQ WHERE userId = ? AND solved = ?;";
   db.query(sql, [userId,solved], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.get("/get_unsolved_BQ_list_mentor", (req, res) => {
+  const userId = req.query.userId;
+  const solved = false;
+  const sql = "SELECT Title, Input_time,userName,userId FROM BQ WHERE mentorCheck = ?;";
+  db.query(sql, [solved], (err, result) => {
     if (err) {
       res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
     } else {
@@ -272,8 +285,20 @@ app.get("/get_unsolved_BQ_list", (req, res) => {
 app.get("/get_solved_BQ_list", (req, res) => {
   const userId = req.query.userId;
   const solved = true;
-  const sql = "SELECT Title, Input_time FROM BQ WHERE userId = ? AND solved = ?;";
+  const sql = "SELECT Title, Input_time,UserName FROM BQ WHERE userId = ? AND solved = ?;";
   db.query(sql, [userId,solved], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.get("/get_solved_BQ_list_mentor", (req, res) => {
+  const userId = req.query.userId;
+  const solved = true;
+  const sql = "SELECT Title, Input_time,userName,userId FROM BQ WHERE mentorCheck = ?;";
+  db.query(sql, [solved], (err, result) => {
     if (err) {
       res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
     } else {
@@ -320,6 +345,19 @@ app.post("/BQ_get_solved", (req, res) => {
     }
   });
 });
+app.post("/BQ_get_mentorCheck", (req, res) => {
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const mentorCheck = true;
+  const sql = "UPDATE BQ SET mentorCheck = ? WHERE Input_time =? AND userID = ?;";
+  db.query(sql, [mentorCheck, BQ,userId], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      res.send("완료되었습니다");
+    }
+  });
+});
 
 //댓글 달기
 app.post("/BQ_reply", async (req, res) => {
@@ -328,10 +366,44 @@ app.post("/BQ_reply", async (req, res) => {
   const input_time = req.body.input_time;
   const userId = req.body.userId;
   const BQ = req.body.BQ;
+  const commenterName = req.session.user.user_name;
+  const commenterId = req.session.user.user_id;
+  const mentorCheck = false;
+
 
    const sql =
-    "INSERT INTO BA (Content, Input_time,userId,BQ) VALUES (?,?,?,?);";
-  db.query(sql, [content, input_time,userId,BQ], (err, result) => {
+    "INSERT INTO BA (Content, Input_time,userId,BQ,commenterName,commenterId) VALUES (?,?,?,?,?,?);";
+  db.query(sql, [content, input_time,userId,BQ,commenterName,commenterId], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "등록에 실패하였습니다", err: err });
+    } else {
+      const sql2 =
+      "UPDATE BQ SET mentorCheck = ? WHERE Input_time =? AND userID = ?;";
+    db.query(sql2, [mentorCheck,BQ,userId], (err, result) => {
+      if (err) {
+        console.log("mentorCheck err",err);
+      } else {
+        console.log("mentorCheck")
+      }
+    });
+      res.send("댓글이 등록되었습니다");
+    }
+  });
+
+});
+app.post("/BQ_reply_mentor", async (req, res) => {
+
+  const content = req.body.content;
+  const input_time = req.body.input_time;
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const commenterName = req.session.user.user_name;
+  const commenterId = req.session.user.user_id;
+
+
+   const sql =
+    "INSERT INTO BA (Content, Input_time,userId,BQ,commenterName,commenterId) VALUES (?,?,?,?,?,?);";
+  db.query(sql, [content, input_time,userId,BQ,commenterName,commenterId], (err, result) => {
     if (err) {
       res.send({ errMessage: "등록에 실패하였습니다", err: err });
     } else {
@@ -341,366 +413,6 @@ app.post("/BQ_reply", async (req, res) => {
 
 });
 
-
-//delete mission
-const deleteFile = (fileName) => {
-  const url = require("url");
-  const urlObject = url.parse(fileName);
-  const filePath = path.join(__dirname, urlObject.pathname);
-  return new Promise((resolve, reject) => {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
-
-app.post("/delete_mission", async (req, res) => {
-  const input_time = req.body.input_time;
-  let content = req.body.content;
-  const imageFileNames = getImageFileNames(content);
-
-  try {
-    await Promise.all(imageFileNames.map((fileName) => deleteFile(fileName)));
-    console.log("All files deleted successfully");
-  } catch (err) {
-    console.error(`Error deleting files: ${err}`);
-  }
-  const sql = "DELETE FROM Mission WHERE Input_time = ?";
-  db.query(sql, input_time, (err, result) => {
-    if (err) {
-      res.send({ errMessage: "삭제 중 오류가 발생했습니다", err: err });
-    } else {
-      res.send("삭제하였습니다");
-    }
-  });
-});
-
-//edit mission
-const cheerio = require("cheerio");
-
-const findMissingImgSrc = (content, originContent) => {
-  console.log("fmfm", typeof content);
-  const $content = cheerio.load(content);
-  const $originContent = cheerio.load(originContent);
-
-  const missingImgSrcs = [];
-  $originContent("img").each((index, element) => {
-    const originSrc = $originContent(element).attr("src");
-    if ($content(`img[src="${originSrc}"]`).length === 0) {
-      missingImgSrcs.push(originSrc);
-    }
-  });
-  return missingImgSrcs;
-};
-
-app.post("/edit_mission", async (req, res) => {
-  const title = req.body.title;
-  const originContent = req.body.originContent;
-  let content = req.body.content;
-  const input_time = req.body.input_time;
-
-  const missing = findMissingImgSrc(content, originContent);
-  console.log("missing", missing);
-  missing.forEach((fileName) => deleteFile(fileName));
-
-  const imageFileNames = getImageFileNames(content);
-  const promises = [];
-  imageFileNames.forEach((fileName) => {
-    const url = require("url");
-    const urlObject = url.parse(fileName);
-    const filePath = path.join(__dirname, urlObject.pathname);
-    promises.push(
-      new Promise((resolve, reject) => {
-        fs.stat(filePath, (err, stats) => {
-          if (err) {
-            if (err.code === "ENOENT") {
-              console.log(
-                "Error: " + err.code + " - " + filePath + " does not exist."
-              );
-              resolve();
-            } else {
-              console.log("fs.stat", err);
-              reject(err);
-            }
-          } else {
-            const tempFilePath = filePath;
-            const postFilePath = path.join(
-              __dirname,
-              "/images/post",
-              path.basename(tempFilePath)
-            );
-            fs.rename(tempFilePath, postFilePath, (err) => {
-              if (err) {
-                console.error(`Error moving file: ${err}`);
-                reject(err);
-              }
-              console.log(`${tempFilePath} was moved to ${postFilePath}`);
-              content = content.replace(
-                urlObject.pathname,
-                "/images/post/" + path.basename(postFilePath)
-              );
-              resolve();
-            });
-          }
-        });
-      })
-    );
-  });
-  try {
-    await Promise.all(promises);
-  } catch (err) {
-    return res.send({ errMessage: "Error moving files", err: err });
-  }
-
-  const sql = "UPDATE Mission SET Title = ?, Content = ? WHERE Input_time =?;";
-  db.query(sql, [title, content, input_time], (err, result) => {
-    if (err) {
-      res.send({ errMessage: "수정에 실패하였습니다", err: err });
-    } else {
-      res.send("수정 성공");
-    }
-  });
-});
-
-
-
-
-
-//mission list
-app.get("/mission_list_done", (req, res) => {
-  const userId = req.session.user.user_id;
-
-  const sql =
-    "SELECT * FROM Mission WHERE input_time IN (SELECT missionKey FROM Complete where userId = ?);";
-  db.query(sql, userId, (err, result) => {
-    if (err) {
-      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
-    } else {
-      res.send(result);
-    }
-  });
-});
-
-app.get("/mission_list_every", (req, res) => {
-  const userId = req.session.user.user_id;
-
-  const sql = "SELECT * FROM Mission ORDER BY Input_time;";
-
-  db.query(sql, userId, (err, result) => {
-    if (err) {
-      res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
-    } else {
-      res.send(result);
-    }
-  });
-});
-
-app.get("/mission_list_new", (req, res) => {
-  const next_mission = req.session.user.next_mission;
-  const completeTime = new Date(req.session.user.complete_time);
-  const currentTime = new Date();
-  const completeDate = new Date(
-    completeTime.getFullYear(),
-    completeTime.getMonth(),
-    completeTime.getDate()
-  );
-  const currentDate = new Date(
-    currentTime.getFullYear(),
-    currentTime.getMonth(),
-    currentTime.getDate()
-  );
-
-  if (next_mission) {
-    if (next_mission === "No More") {
-      //미션 다 완료
-      res.send(false);
-    }
-    if (currentDate > completeDate) {
-      //하루지남
-      const sql = "SELECT * FROM Mission WHERE input_time = ?;";
-      db.query(sql, next_mission, (err, result) => {
-        if (err) {
-          res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
-        } else {
-          res.send({ result: result });
-        }
-      });
-    } else {
-      //하루 안 지남
-
-      res.send(false);
-    }
-  } else {
-    // 첫 미션
-    const sql = "SELECT * FROM Mission ORDER BY Input_time Limit 1;";
-    db.query(sql, (err, result) => {
-      if (err) {
-        res.send({ errMessage: "미션을 불러오지 못 했습니다", err: err });
-      } else {
-        res.send({ result: result, first: "first" });
-      }
-    });
-  }
-});
-
-//completed mission 완료된 미션
-app.get("/completed_mission", (req, res) => {
-  const input_time = req.query.input_time;
-  const userId = req.session.user.user_id;
-
-  const sql = "SELECT * FROM Complete WHERE missionKey = ? AND userId = ?;";
-  db.query(sql, [input_time, userId], (err, result) => {
-    if (err) {
-      res.send({ errMessage: "completed mission err", err: err });
-    }
-    if (result.length > 0) {
-      res.send(true);
-    } else {
-      res.send(false);
-    }
-  });
-});
-
-//complete mission
-app.post("/complete_mission", (req, res) => {
-  const missionKey = req.body.missionKey;
-  const userId = req.body.userId;
-  const complete_date = req.body.complete_date;
-
-  const sql = "INSERT INTO Complete (userId, missionKey) VALUES (?,?);";
-  db.query(sql, [userId, missionKey], (err, result) => {
-    if (err) {
-      res.send({ err_message: "Insert 오류" });
-    } else {
-      const sql2 =
-        "SELECT Input_time FROM Mission WHERE Input_time > ? ORDER BY Input_time LIMIT 1;";
-      db.query(sql2, [missionKey], (err, result) => {
-        if (err) {
-          console.log("finding next mission err");
-        } else if (result.length > 0) {
-          const next_mission = result[0].Input_time;
-          console.log("next missionKey:", next_mission);
-          const sql3 =
-            "UPDATE Login SET next_mission = ?, complete_time = ? WHERE user_id =?;";
-          console.log("complete_date", complete_date);
-          db.query(
-            sql3,
-            [next_mission, complete_date, userId],
-            (err, result) => {
-              if (err) {
-                res.send({ err_message: "UPdate 오류" });
-              } else {
-                req.session.user.next_mission = next_mission;
-                req.session.user.complete_time = complete_date;
-                res.send("미션이 완료되었습니다");
-              }
-            }
-          );
-        } else {
-          const next_mission = "No More";
-          const sql3 =
-            "UPDATE Login SET next_mission = ?, complete_time = ? WHERE user_id =?;";
-          db.query(
-            sql3,
-            [next_mission, complete_date, userId],
-            (err, result) => {
-              if (err) {
-                res.send({ err_message: "UPdate 오류" });
-              } else {
-                req.session.user.next_mission = next_mission;
-                req.session.user.complete_date = complete_date;
-                res.send("미션이 완료되었습니다");
-              }
-            }
-          );
-        }
-      });
-    }
-  });
-});
-
-//MEMO
-app.post("/save_memo", (req, res) => {
-  const memo = req.body.memo;
-  const missionKey = req.body.missionKey;
-  const userId = req.body.userId;
-
-  const sql = "SELECT * FROM Memo WHERE MissionKey = ? AND UserId = ?;";
-  db.query(sql, [missionKey, userId], (err, result) => {
-    if (err) {
-      res.send({ errMessage: "오류가 발생했습니다", err: err });
-    } else if (result.length > 0) {
-      const sql =
-        "UPDATE Memo SET Memo = ? WHERE MissionKey = ? AND UserId = ?;";
-      db.query(sql, [memo, missionKey, userId], (err, result) => {
-        if (err) {
-          res.send({ errMessage: "메모 수정에 실패하였습니다", err: err });
-        } else {
-          res.send("메모가 저장되었습니다");
-        }
-      });
-    } else {
-      const sql = "INSERT INTO Memo (UserId,Memo,MissionKey) VALUES (?,?,?);";
-      db.query(sql, [userId, memo, missionKey], (err, result) => {
-        if (err) {
-          res.send({ err_message: "메모 Insert 오류", err: err });
-        } else {
-          res.send("메모가 저장되었습니다");
-        }
-      });
-    }
-  });
-});
-
-app.get("/get_memo", (req, res) => {
-  const input_time = req.query.missionKey;
-  const userId = req.query.userId;
-
-  const sql = "SELECT * FROM Memo WHERE MissionKey = ? AND UserId = ?;";
-  db.query(sql, [input_time, userId], (err, result) => {
-    if (err) {
-      res.send({ errMessage: "메모를 불러오지 못했습니다", err: err });
-    } else {
-      res.send(result);
-    }
-  });
-});
-
-//WAITING
-app.get("/waiting", (req, res) => {
-  const next_mission = req.session.user.next_mission;
-  const completeTime = new Date(req.session.user.complete_time);
-  const completeDate = new Date(
-    completeTime.getFullYear(),
-    completeTime.getMonth(),
-    completeTime.getDate()
-  );
-  const currentTime = new Date();
-  const currentDate = new Date(
-    currentTime.getFullYear(),
-    currentTime.getMonth(),
-    currentTime.getDate()
-  );
-  const nextDay = new Date(currentDate.getTime() + 86400000);
-  const year = nextDay.getFullYear();
-  const month = nextDay.getMonth() + 1;
-  const date = nextDay.getDate();
-
-  if (next_mission === "No More") {
-    res.send("다음 미션을 준비 중입니다.");
-  }
-  if (currentDate <= completeDate) {
-    res.send(`${year}년 ${month}월 ${date}일 에 새로운 미션이 공개됩니다.`);
-  } else {
-    res.send(
-      "새로운 미션을 가져오는 데 오류가 발생했습니다. 오류가 반복되면 문의해 주세요"
-    );
-  }
-});
 
 //orgChart
 

@@ -4,7 +4,7 @@ import Axios from "axios";
 import { server_url } from "../config/url";
 import BQList from "./BQList";
 import { Link } from "react-router-dom";
-const BusinessQA = ({ setSelectMenu }) => {
+const BusinessQA = () => {
   const [solved, setSolved] = useState(false);
   const { userId } = useParams("");
   const [BQ_unsolved, setBQ_unsolved] = useState([]);

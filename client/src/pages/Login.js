@@ -20,8 +20,11 @@ const Login = () => {
       console.log(response);
       if (response.data.errMessage) {
         setErrMessage(response.data.errMessage);
-      } else {
-        document.location.href = `/${response.data[0].user_id}/QA`;
+      } 
+      else {
+        if(response.data[0].user_type==="mentee"){
+          document.location.href = `/${response.data[0].user_id}/QA`;
+        }else{document.location.href = `/mentor/${response.data[0].user_id}/QA`;}
       }
     });
   };

@@ -30,7 +30,7 @@ const SideBar = () => {
   return (
     <Sidebar className="sidebar-container">
       <div className="logo-section">
-        <a href={`/${userId}`}>
+        <a href={`/`}>
           <img src={exec_logo} className="logo" />
         </a>
       </div>

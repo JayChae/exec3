@@ -9,6 +9,7 @@ const DetailQ = ({ Input_time, userId }) => {
   Axios.defaults.withCredentials = true;
   const [QuestionContent, setQuestionContent] = useState("");
   const [QuestionTitle, setQuestionTitle] = useState("");
+  const [QuestionUserName, setQuestionUserName] = useState("");
   const [solvedStatus, setSolvedStatus] = useState(false);
   const [reply, setReply] = useState("");
   const [replyList, setReplyList] = useState([]);
@@ -21,6 +22,7 @@ const DetailQ = ({ Input_time, userId }) => {
       setQuestionContent(result.data[0].Content);
       setQuestionTitle(result.data[0].Title);
       setSolvedStatus(result.data[0].solved);
+      setQuestionUserName(result.data[0].userName)
       Axios.post(`${server_url}/get_BA_list`, {
         BQ: Input_time,
         userId: userId,
@@ -69,14 +71,16 @@ const DetailQ = ({ Input_time, userId }) => {
     <div className="detailQ-container">
       <div className="detailQ-header">
         <h1>{QuestionTitle}</h1>
+        <p>{QuestionUserName}</p>
         <div className="detailQ-solveBtn">
           {solvedStatus ? <h2>완료됨</h2>:<button onClick={get_solved}>완료하기</button>}
          
         </div>
       </div>
       <div className="detailQ-board">
-        <div className="detailQ-question">{parse(QuestionContent)}</div>
-        {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} userId={userId}/>))}
+        <div className="detailQ-question">
+          {parse(QuestionContent)}</div>
+        {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} userId={userId} />))}
       </div>
       <div className="reply-section">
         <TextEditor setContent={setReply} />

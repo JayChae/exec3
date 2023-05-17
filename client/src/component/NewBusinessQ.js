@@ -1,15 +1,29 @@
 import Axios from "axios";
 import { server_url } from "../config/url";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Editor from "ckeditor5-custom-build/build/ckeditor";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { useParams } from "react-router-dom";
 import TextEditor from "./TextEditor";
 
 function NewBusinessQ() {
+  Axios.defaults.withCredentials = true;
   const { userId } = useParams("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    Axios.get(`${server_url}/api/login`).then((response) => {
+      console.log("벡엔드 연결했다");
+      if (response.data.loggedIn === true)
+      {
+        setUserName(response.data.user.user_name)
+      }
+      else
+      {
+        document.location.href = "/login";
+      }
+    });
+  }, []);
 
 
 
@@ -19,6 +33,7 @@ function NewBusinessQ() {
       content: content,
       input_time: new Date(),
       userId: userId,
+      userName: userName
     }).then((response) => {
       if (response.data.errMessage) {
         alert(response.data.errMessage);
