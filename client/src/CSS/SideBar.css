@@ -58,6 +58,19 @@ div.ps-sidebar-container.css-dip3t8 {
     cursor: pointer;
     transition: color 0.3s ease;
   }
+
+  .logo-section{
+    padding: 1px;
+}
+
+.logo-section img{
+    cursor: pointer;
+    width: 210px;
+    height: 100px;
+    object-fit: cover; 
+    overflow: hidden;
+
+}
   
   .logout-container p:hover {
     color: #333333;
