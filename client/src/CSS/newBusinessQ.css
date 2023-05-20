@@ -9,10 +9,11 @@
 
 .newBusinessQ-header{
     display: flex;
+    align-items: center;
     flex-direction: row;
+    justify-content: space-between;
     width: 80%;
 }
-
 
 .editor{
     padding:10px;
@@ -27,14 +28,6 @@
     align-items: flex-start;
     gap: 15px;
     width: 80%;
-}
-
-.write-header{
-    font-weight: 600;
-    font-size: 1.3rem;
-    line-height: 100%;
-    color: rgb(80, 84, 103);
-    padding: 8px 16px;
 }
 
 

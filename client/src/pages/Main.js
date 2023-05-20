@@ -15,9 +15,9 @@ const Main = () => {
   return (
     <div className="main-page">
       <div className="main">
-      <ProSidebarProvider>
-        <SideBar/>
-      </ProSidebarProvider>
+        <ProSidebarProvider>
+          <SideBar/>
+        </ProSidebarProvider>
         {(() => {
           switch(selectMenu){
             case 'QA': return <BusinessQA/>;

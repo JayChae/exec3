@@ -48,12 +48,8 @@ function NewBusinessQ() {
   return (
     <div className="newBusinessQ-container">
       <div className="newBusinessQ-header">
-        <h3 className="write-header">업무 등록하기 </h3>
-        <div className="write-btn">
-          <a className="write-reg" onClick={mission_save}>
-            등록
-          </a>
-        </div>
+        <h1 className="write-header">질문 등록</h1>
+        <button className="submit-button" onClick={mission_save}>등록</button>
       </div>
       <div className="write-title">
         <input

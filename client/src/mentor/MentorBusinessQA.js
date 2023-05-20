@@ -29,7 +29,7 @@ const MentorBusinessQA = () => {
   return (
     <div className="BusinessQA-container">
       <div className="BusinessQA-header">
-        <h2>업무 현황</h2>
+        <h1>질답 현황</h1>
       </div>
 
       <div className="BusinessQA-board">

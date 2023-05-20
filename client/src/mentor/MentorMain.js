@@ -12,10 +12,10 @@ const MentorMain = () => {
 
   return (
     <div className="main-page">
-      <ProSidebarProvider>
-        <MentorSideBar/>
-      </ProSidebarProvider>
       <div className="main">
+        <ProSidebarProvider>
+          <MentorSideBar/>
+        </ProSidebarProvider> 
         {(() => {
           switch(selectMenu){
             case 'QA': return <MentorBusinessQA/>;

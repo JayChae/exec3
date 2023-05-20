@@ -37,7 +37,7 @@ const DetailQ = ({ Input_time, userId }) => {
       setQuestionTitle(result.data[0].Title);
       setSolvedStatus(result.data[0].solved);
       setQuestionUserName(result.data[0].userName);
-      setQuestionTime(Input_time);
+      setQuestionTime( string_to_date(Input_time));
       Axios.post(`${server_url}/get_BA_list`, {
         BQ: Input_time,
         userId: userId,
@@ -92,7 +92,7 @@ const DetailQ = ({ Input_time, userId }) => {
         <div className="detailQ-question">
           <div className="detailQ-userinfo">
             <div className="detailQ-username">{QuestionUserName}</div>
-            <div className="detailQ-inputime">{ string_to_date(QuestionTime) }</div>
+            <div className="detailQ-inputime">{ QuestionTime }</div>
           </div>
           <div className="detailQ-content">{parse(QuestionContent)}</div>
         </div>
