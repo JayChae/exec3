@@ -81,11 +81,19 @@ div {
     padding: 1px;
 }
 
+.logo-section img{
+    cursor: pointer;
+    width: 210px;
+    height: 100px;
+    object-fit: cover; 
+    overflow: hidden;
+
+}
 .logo{
     cursor: pointer;
     width: 210px;
     height: 100px;
-    fill: none;
+    object-fit: cover; 
     overflow: hidden;
 }
 
