@@ -47,10 +47,9 @@
 }
 
 .detailQ-question{
-    display: table-cell;
     width: 100%;
     background-color: white;
-    box-shadow: 0 0 0 1px rgb(212, 212, 212);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.210);
 }
 .detailQ-question:nth-child(2n){
     background-color: #f2f2f2;
@@ -79,10 +78,8 @@
 
 .detailQ-comment{
     width: 100%;
-    background-color: skyblue;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: rgb(229, 248, 255);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.210);
 }
 
 .reply-section{
