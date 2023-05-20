@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     margin: 20px;
-    width: 80%;
+    width: 60%;
 
 }
 
@@ -17,8 +17,8 @@
 
 .detailQ-header h1{
     font-size: 30px;
-    font-weight: 500;
-    margin-bottom: 10px;
+    font-weight: bold;
+    
 }
 
 .submit-button{
@@ -41,19 +41,39 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0px 20px;
     align-items: center;
 }
 
 .detailQ-question{
+    display: table-cell;
     width: 100%;
+    background-color: white;
+    box-shadow: 0 0 0 1px rgb(212, 212, 212);
+}
+.detailQ-question:nth-child(2n){
     background-color: #f2f2f2;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-bottom: 7px;
 }
 
-.detailQ-question p{
-    padding: 20px;    
+.detailQ-userinfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.detailQ-username{
+    padding: 15px 0px 0px 15px;
+    font-weight: bolder;
+}
+
+.detailQ-inputime{
+    padding: 15px 0px 0px 15px;
+    font-size: 15px;
+    color: #777777;
+}
+
+.detailQ-content{
+    padding: 0px 15px 10px 15px;
 }
 
 .detailQ-comment{

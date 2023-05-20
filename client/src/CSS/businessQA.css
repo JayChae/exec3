@@ -1,25 +1,25 @@
 .BusinessQA-container {
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
-    width: 80%;
+    padding: 20px;
+    width: 60%;
   }
 
   .BusinessQA-header{
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  .BusinessQA-header h2 {
+  .BusinessQA-header h1 {
     font-size: 30px;
     font-weight: bold;
-    margin-bottom: 10px;
   }
 
-  .BusinessQA-addBtn{
-    width: 100%;
-    text-align: end;
-  }
   
   .BusinessQA-addBtn button {
     background-color: #007bff;
@@ -30,6 +30,7 @@
     cursor: pointer;
     width: 150px;
     border-radius: 4px;
+   
   }
   
   .BusinessQA-addBtn button:hover {
@@ -75,6 +76,7 @@
     align-items: center;
     background-color: #ffffff;
     padding: 0px 20px;
+    border-top: 1px solid gray;
     /* border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
   }

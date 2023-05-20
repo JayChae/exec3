@@ -1,7 +1,12 @@
 /* Styling for the sidebar */
 
+div.ps-sidebar-container.css-dip3t8 {
+  background-color: white;
+}
+
 .sidebar-container{
-  min-height: 100vh;
+  height: 100vh;
+  background-color: white;
 }
 
   /* Styling for the settings icon and logout button */

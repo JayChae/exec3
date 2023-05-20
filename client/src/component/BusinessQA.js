@@ -25,11 +25,9 @@ const BusinessQA = () => {
   return (
     <div className="BusinessQA-container">
       <div className="BusinessQA-header">
-        <h2>업무 현황</h2>
-      </div>
-      <div className="BusinessQA-addBtn">
-        <Link to={`/${userId}/newBusinessQ`}>
-          <button>업무 등록하기</button>
+        <h1>질답 현황</h1>
+        <Link className="BusinessQA-addBtn" to={`/${userId}/newBusinessQ`}>
+          <button >질문 등록</button>
         </Link>
       </div>
       <div className="BusinessQA-board">
@@ -55,14 +53,14 @@ const BusinessQA = () => {
           {solved? BQ_solved.map((question) => (
             <BQList
               key={question.Input_time}
-              Input_time={question.Input_time}
+              Input_time={ question.Input_time }
               Title={question.Title}
               userId={userId}
             />
           )):BQ_unsolved.map((question) => (
             <BQList
               key={question.Input_time}
-              Input_time={question.Input_time}
+              Input_time={ question.Input_time }
               Title={question.Title}
               userId={userId}
             />

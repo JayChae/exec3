@@ -10,9 +10,23 @@ const DetailQ = ({ Input_time, userId }) => {
   const [QuestionContent, setQuestionContent] = useState("");
   const [QuestionTitle, setQuestionTitle] = useState("");
   const [QuestionUserName, setQuestionUserName] = useState("");
+  const [QuestionTime, setQuestionTime] = useState("");
   const [solvedStatus, setSolvedStatus] = useState(false);
   const [reply, setReply] = useState("");
   const [replyList, setReplyList] = useState([]);
+
+  const string_to_date = (Input_time) => {
+    const time = new Date(Input_time)
+    const year = time.getFullYear();
+    const month = time.getMonth() + 1;
+    const day = time.getDate();
+
+    const hour = time.getHours();
+    const minute = time.getMinutes();
+    const second = time.getSeconds()
+
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+  }
 
   useEffect(() => {
     Axios.post(`${server_url}/get_BQ_detail`, {
@@ -22,7 +36,8 @@ const DetailQ = ({ Input_time, userId }) => {
       setQuestionContent(result.data[0].Content);
       setQuestionTitle(result.data[0].Title);
       setSolvedStatus(result.data[0].solved);
-      setQuestionUserName(result.data[0].userName)
+      setQuestionUserName(result.data[0].userName);
+      setQuestionTime(Input_time);
       Axios.post(`${server_url}/get_BA_list`, {
         BQ: Input_time,
         userId: userId,
@@ -71,12 +86,16 @@ const DetailQ = ({ Input_time, userId }) => {
     <div className="detailQ-container">
       <div className="detailQ-header">
         <h1>{QuestionTitle}</h1>
-        <p>{QuestionUserName}</p>
         {solvedStatus ? <h2>완료됨</h2>:<button className="submit-button" onClick={get_solved}>완료하기</button>}
       </div>
       <div className="detailQ-board">
         <div className="detailQ-question">
-          {parse(QuestionContent)}</div>
+          <div className="detailQ-userinfo">
+            <div className="detailQ-username">{QuestionUserName}</div>
+            <div className="detailQ-inputime">{ string_to_date(QuestionTime) }</div>
+          </div>
+          <div className="detailQ-content">{parse(QuestionContent)}</div>
+        </div>
         {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} userId={userId} />))}
       </div>
       <div className="reply-section">
