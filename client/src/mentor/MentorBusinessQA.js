@@ -69,7 +69,7 @@ const MentorBusinessQA = () => {
                   Input_time={question.Input_time}
                   Title={question.Title}
                   menteeID={question.userId}
-                  userName={question.UserName}
+                  userName={question.userName}
                   userID={userId}
                 />
               ))}
