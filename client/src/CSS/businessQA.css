@@ -19,26 +19,15 @@
     font-size: 30px;
     font-weight: bold;
   }
+  
+  .BusinessQA-board-btn {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-  
-  .BusinessQA-addBtn button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 150px;
-    border-radius: 4px;
-   
-  }
-  
-  .BusinessQA-addBtn button:hover {
-    background-color: #0062cc;
-  }
-  
   .BusinessQA-board {
-    margin-top: 20px;
     width: 100%;
   }
   
@@ -47,7 +36,7 @@
     justify-content:start;
   }
   
-  .BusinessQA-board-statusBtn button {
+  .status {
     width: 70px;
     border: none;
     padding: 10px 10px;
@@ -57,19 +46,45 @@
     background-color: white;
   }
   
-  .BusinessQA-board-statusBtn button:hover{
+  .status:hover{
     color: #007bff;
     border-bottom: 2px solid #007bff;
   }
 
-  .BusinessQA-board-statusBtn button.chosen{
+  .status-chosen{
+    width: 70px;
+    border: none;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: white;
+
     color: #007bff;
     border-top: none;
     border-right: none;
     border-left: none;
     border-bottom: 2px solid #007bff;
   }
+
+  .BusinessQA-addBtn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    border-radius: 4px;
+   
+    flex-direction: row-reverse;
+  }
   
+  .BusinessQA-addBtn:hover {
+    background-color: #0062cc;
+  }
+
+
   .BusinessQA-board-list {
     display: flex;
     flex-direction: column;
@@ -88,14 +103,18 @@
     padding: 20px;
     background-color: white;
     border-bottom: 1px solid gray;
-    justify-content: space-between;
+    align-items: center;
   }
 
   .BusinessQuestion:hover{
     background-color: #f2f2f2;
   }
-
+  
+  .BusinessQuestion-Title{
+    margin-right: auto;
+  }
 
   .BusinessQuestion-Time{
-    
+    margin-left: 5%;
   }
+

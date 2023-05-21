@@ -31,11 +31,10 @@ const MentorBusinessQA = () => {
       <div className="BusinessQA-header">
         <h1>질답 현황</h1>
       </div>
-
       <div className="BusinessQA-board">
         <div className="BusinessQA-board-statusBtn">
           <button
-            className={solved ? "" : "chosen"}
+            className={solved ? "status" : "status-chosen"}
             onClick={() => {
               setSolved(false);
             }}
@@ -43,7 +42,7 @@ const MentorBusinessQA = () => {
             미답변
           </button>
           <button
-            className={solved ? "chosen" : ""}
+            className={solved ? "status-chosen" : "status"}
             onClick={() => {
               setSolved(true);
             }}

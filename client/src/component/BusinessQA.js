@@ -26,14 +26,11 @@ const BusinessQA = () => {
     <div className="BusinessQA-container">
       <div className="BusinessQA-header">
         <h1>질답 현황</h1>
-        <Link className="BusinessQA-addBtn" to={`/${userId}/newBusinessQ`}>
-          <button >질문 등록</button>
-        </Link>
       </div>
-      <div className="BusinessQA-board">
-        <div className="BusinessQA-board-statusBtn">
+      <div className="BusinessQA-board-btn">
+        <div className="BusinessQA-board-StatusBtn">
           <button
-            className={solved ? "" : "chosen"}
+            className={solved ? "status" : "status-chosen"}
             onClick={() => {
               setSolved(false);
             }}
@@ -41,7 +38,7 @@ const BusinessQA = () => {
             미해결
           </button>
           <button
-            className={solved ? "chosen" : ""}
+            className={solved ? "status-chosen" : "status"}
             onClick={() => {
               setSolved(true);
             }}
@@ -49,6 +46,13 @@ const BusinessQA = () => {
             해결
           </button>
         </div>
+        <div className="BusinessQA-board-AddBtn">
+          <Link to={`/${userId}/newBusinessQ`}>
+            <button className="BusinessQA-addBtn" >질문 등록</button>
+          </Link>
+        </div>
+      </div>
+      <div className="BusinessQA-board">
         <div className="BusinessQA-board-list">
           {solved? BQ_solved.map((question) => (
             <BQList
