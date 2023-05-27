@@ -358,6 +358,31 @@ app.post("/BQ_get_mentorCheck", (req, res) => {
     }
   });
 });
+app.post("/BQ_delete", (req, res) => {
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const sql = "DELETE FROM BQ WHERE Input_time = ? AND userId = ?";
+  db.query(sql, [BQ,userId], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      const sql2 = "DELETE FROM BA WHERE BQ = ? AND userId = ?";
+      db.query(sql2, [BQ,userId], (err, result) => {
+        if (err) {
+          res.send({ errMessage: "불러오지 못 했습니다", err: err });
+        } else {
+          res.send("삭제되었습니다");
+        }
+      });
+    }
+  });
+
+  
+
+
+
+
+});
 
 //댓글 달기
 app.post("/BQ_reply", async (req, res) => {
@@ -413,6 +438,19 @@ app.post("/BQ_reply_mentor", async (req, res) => {
 
 });
 
+app.post("/delete_reply", (req, res) => {
+  const userId = req.body.userId;
+  const BQ = req.body.BQ;
+  const Input_time = req.body.Input_time;
+  const sql = "DELETE FROM BA WHERE Input_time = ? AND userId = ? AND BQ = ?";
+  db.query(sql, [Input_time,userId,BQ], (err, result) => {
+    if (err) {
+      res.send({ errMessage: "불러오지 못 했습니다", err: err });
+    } else {
+      res.send("삭제되었습니다");
+    }
+  });
+});
 
 //orgChart
 
