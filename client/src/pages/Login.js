@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {Link,} from 'react-router-dom';
 import { server_url } from '../config/url';
+import background from '../icon/exec-bg.png'
 import Axios from 'axios'
 import '../CSS/login.css'
 
@@ -31,7 +32,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-page" style={{ backgroundImage: `url(${background})`}}>
       <div className="login-section">
         <div className="login-title">LOGIN</div>
         <form onSubmit={login}>
@@ -66,7 +67,6 @@ const Login = () => {
         </form>
       </div>
     </div>
-    
   );
 };
 

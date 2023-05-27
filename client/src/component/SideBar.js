@@ -32,12 +32,15 @@ const SideBar = () => {
     <Sidebar className="sidebar-container">
       <div className="logo-section">
         <a href={`/`}>
-          <img src={exec_logo} className="logo" />
+          <img src={exec_logo} className="logo" 
+            onDragStart={(e) => {
+              e.preventDefault();}}
+          />
         </a>
       </div>
 
       <Menu>
-        <MenuItem icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 업무 등록하기 </MenuItem>
+        <MenuItem icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 질답 현황 </MenuItem>
         <SubMenu icon={<BiGroup/>} label="팀">
           <MenuItem icon={<BiSitemap/>} component={<Link to={`/${userId}/OrgChart`} />}> 조직도 </MenuItem>
           <MenuItem icon={<BiUser/>}> 팀원 정보 </MenuItem>

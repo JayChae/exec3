@@ -3,8 +3,7 @@ import {Link} from 'react-router-dom';
 import Axios from 'axios'
 import { server_url } from "../config/url";
 import {isEmail, isLength,isAscii} from 'validator';
-
-
+import background from '../icon/exec-bg.png'
 
 
 function Register(){
@@ -82,7 +81,7 @@ function Register(){
     }
 
     return (
-        <div className="register-page">
+        <div className="register-page" style={{ backgroundImage: `url(${background})`}}>
             <div className="register-section">
               <h1>계정 생성</h1>
                 <input

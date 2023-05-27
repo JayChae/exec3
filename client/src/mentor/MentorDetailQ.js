@@ -4,6 +4,10 @@ import { server_url } from "../config/url";
 import parse from "html-react-parser";
 import TextEditor from "../component/TextEditor"
 import Comment from "../component/Comment"
+import { elapsedFullTime } from "../component/realDate";
+import { useInterval } from 'react-use';
+
+
 const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
     Axios.defaults.withCredentials = true;
     const [QuestionContent, setQuestionContent] = useState("");
@@ -14,19 +18,14 @@ const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
     const [reply, setReply] = useState("");
     const [replyList, setReplyList] = useState([]);
 
-    const string_to_date = (Input_time) => {
-      const time = new Date(Input_time)
-      const year = time.getFullYear();
-      const month = time.getMonth() + 1;
-      const day = time.getDate();
-  
-      const hour = time.getHours();
-      const minute = time.getMinutes();
-      const second = time.getSeconds()
-  
-      return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-    }
-  
+    const [realTime, setRealTime] = useState(Date.now());
+
+    useInterval(() => {
+      setRealTime(Date.now());
+    }, 1000);
+
+
+
     useEffect(() => {
       Axios.post(`${server_url}/get_BQ_detail`, {
         Input_time: Input_time,
@@ -36,7 +35,7 @@ const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
         setQuestionTitle(result.data[0].Title);
         setSolvedStatus(result.data[0].mentorCheck);
         setQuestionUserName(result.data[0].userName)
-        setQuestionTime( string_to_date(Input_time));
+        setQuestionTime( Input_time );
         Axios.post(`${server_url}/get_BA_list`, {
           BQ: Input_time,
           userId: menteeID,
@@ -94,7 +93,9 @@ const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
           <div className="detailQ-question">
             <div className="detailQ-userinfo">
               <div className="detailQ-username">{QuestionUserName}</div>
-              <div className="detailQ-inputime">{ QuestionTime }</div>
+              <div className="detailQ-inputime">{ elapsedFullTime(QuestionTime, realTime) }</div>
+              <div className="detailQ-edit">수정</div>
+              <div className="detailQ-delete">삭제</div>
             </div>
             <div className="detailQ-content">{parse(QuestionContent)}</div>
           </div>

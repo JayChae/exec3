@@ -1,25 +1,20 @@
-import {React,useState} from 'react'
+import {React, useState} from 'react'
+import { useInterval } from 'react-use';
+import { elapsedTime } from './realDate';
 import { Link } from "react-router-dom";
 
 const BQList = ({Input_time,Title,userId,UserName}) => {
-  const string_to_date = (Input_time) => {
-    const time = new Date(Input_time)
-    const year = time.getFullYear();
-    const month = time.getMonth() + 1;
-    const day = time.getDate();
+  const [realTime, setRealTime] = useState(Date.now());
 
-    const hour = time.getHours();
-    const minute = time.getMinutes();
-    const second = time.getSeconds()
+  useInterval(() => {
+    setRealTime(Date.now());
+  }, 1000);
 
-    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-  }
-  
   return (
     <Link to={`/${userId}/DetailQ/${Input_time}`} className="BusinessQuestion">
           <div className='BusinessQuestion-Title'>{Title}</div>
           <div className='BusinessQuestion-UserName'>{UserName}</div>
-          <div className='BusinessQuestion-Time'>{ string_to_date(Input_time) }</div>
+          <div className='BusinessQuestion-Time'>{ elapsedTime(Input_time, realTime) }</div>
     </Link>
     
   )
