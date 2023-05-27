@@ -12,6 +12,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import { BiChat, BiGroup, BiCreditCard, BiBriefcase, BiBulb, BiStoreAlt, BiSitemap, BiUser } from "react-icons/bi";
+import "../CSS/SideBar.css"
 
 const SideBar = () => {
   Axios.defaults.withCredentials = true;
@@ -40,9 +41,9 @@ const SideBar = () => {
       </div>
 
       <Menu>
-        <MenuItem icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 질답 현황 </MenuItem>
+        <MenuItem active={window.location.pathname === `/${userId}/QA` } icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 질답 현황 </MenuItem>
         <SubMenu icon={<BiGroup/>} label="팀">
-          <MenuItem icon={<BiSitemap/>} component={<Link to={`/${userId}/OrgChart`} />}> 조직도 </MenuItem>
+          <MenuItem active={window.location.pathname === `/${userId}/OrgChart` } icon={<BiSitemap/>} component={<Link to={`/${userId}/OrgChart`} />}> 조직도 </MenuItem>
           <MenuItem icon={<BiUser/>}> 팀원 정보 </MenuItem>
         </SubMenu>
         <MenuItem icon={<BiBulb/>}> 액셀코칭 </MenuItem>

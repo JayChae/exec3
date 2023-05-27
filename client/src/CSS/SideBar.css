@@ -6,7 +6,10 @@ div.ps-sidebar-container.css-dip3t8 {
 
 .sidebar-container{
   height: 100vh;
-  background-color: white;
+}
+
+.ps-menu-button.ps-active{
+  background-color: rgb(214, 243, 255);
 }
 
   /* Styling for the settings icon and logout button */

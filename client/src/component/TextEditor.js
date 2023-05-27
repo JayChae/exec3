@@ -102,6 +102,7 @@ const TextEditor = ({ setContent }) => {
     mediaEmbed: {
       previewsInData: true,
     },
+    placeholder: "내용을 입력하세요.",
     extraPlugins: [uploadPlugin],
   };
 
@@ -109,7 +110,6 @@ const TextEditor = ({ setContent }) => {
     <CKEditor
       editor={Editor}
       config={editorConfiguration}
-      data="<p>WRITE HERE!</p>"
       onChange={(event, editor) => {
         const data = editor.getData();
         setContent(data);
