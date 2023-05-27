@@ -77,9 +77,27 @@ const DetailQ = ({ Input_time, userId }) => {
     });
   }
 
-
-  const onRemove = (QuestionTime) => {
-    setReplyList(replyList.filter((reply) => reply.Input_time !== QuestionTime))}
+  const delete_BQ=()=>{
+    if (window.confirm("삭제하시겠습니까?")) {
+      Axios.post(`${server_url}/BQ_delete`, {
+        BQ: Input_time,
+        userId: userId,
+      }).then((response) => {
+        if (response.data.errMessage) {
+          alert(response.data.errMessage);
+          console.log(response.data.err);
+        } else {
+          alert(response.data);
+          document.location.href = `/${userId}/QA`;
+        }
+      });
+    }
+    else{
+      console.log("No delete");
+    }
+    
+    
+  }
 
   return (
     <div className="detailQ-container">
@@ -92,12 +110,11 @@ const DetailQ = ({ Input_time, userId }) => {
           <div className="detailQ-userinfo">
             <div className="detailQ-username">{QuestionUserName}</div>
             <div className="detailQ-inputime">{ elapsedFullTime(QuestionTime, realTime) }</div>
-            <div className="detailQ-edit">수정</div>
-            <div className="detailQ-delete">삭제</div>
+            <div className="detailQ-delete" onClick={delete_BQ}>삭제</div>
           </div>
           <div className="detailQ-content">{parse(QuestionContent)}</div>
         </div>
-        {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} userId={userId} />))}
+        {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} mentee={userId} userId={userId} />))}
       </div>
       <div className="reply-section">
         <TextEditor setContent={setReply} />

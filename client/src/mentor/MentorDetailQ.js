@@ -94,12 +94,10 @@ const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
             <div className="detailQ-userinfo">
               <div className="detailQ-username">{QuestionUserName}</div>
               <div className="detailQ-inputime">{ elapsedFullTime(QuestionTime, realTime) }</div>
-              <div className="detailQ-edit">수정</div>
-              <div className="detailQ-delete">삭제</div>
             </div>
             <div className="detailQ-content">{parse(QuestionContent)}</div>
           </div>
-          {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} userId={menteeID} />))}
+          {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} mentee={menteeID} userId={userId} />))}
         </div>
         <div className="reply-section">
           <TextEditor setContent={setReply} />
