@@ -82,10 +82,15 @@
 
 .detailQ-delete{
     padding: 25px 25px 0px 0px;
-    margin-left: 10px;
+    margin-left: auto;
+    cursor: pointer;
     align-self: flex-end;
     font-size: 15px;
     color: #777777;
+}
+
+.detailQ-delete:hover{
+    font-weight: bold;
 }
 
 .detailQ-content{
