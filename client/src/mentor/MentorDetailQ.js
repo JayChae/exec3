@@ -82,26 +82,23 @@ const MentorDetailQ = ({ Input_time, menteeID,userId }) => {
   
     return (
       <div className="detailQ-container">
+        <div className="detailQ-upload">
         <div className="detailQ-header">
-          <h1>{QuestionTitle}</h1>
-          <div className="detailQ-solveBtn">
-            {solvedStatus ? <h2>완료됨</h2>:<button className="submit-button" onClick={get_mentorCheck}>답변 완료하기</button>}
-           
-          </div>
+          <h1>{"Q. " + QuestionTitle}</h1>
+           {solvedStatus ? <h2>완료됨</h2>:<button className="submit-button" onClick={get_mentorCheck}>답변 완료하기</button>}
         </div>
+        <div className="detailQ-userinfo">
+          <div className="detailQ-username-temp">{QuestionUserName}</div>
+          <div className="detailQ-inputime-temp">{ elapsedFullTime(QuestionTime, realTime) }</div>
+        </div>
+        <div className="detailQ-content">{parse(QuestionContent)}</div>
+      </div>
         <div className="detailQ-board">
-          <div className="detailQ-question">
-            <div className="detailQ-userinfo">
-              <div className="detailQ-username">{QuestionUserName}</div>
-              <div className="detailQ-inputime">{ elapsedFullTime(QuestionTime, realTime) }</div>
-            </div>
-            <div className="detailQ-content">{parse(QuestionContent)}</div>
-          </div>
           {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} mentee={menteeID} userId={userId} />))}
         </div>
         <div className="reply-section">
           <TextEditor setContent={setReply} />
-          <button className="submit-button" onClick={save_reply}>댓글 등록하기</button>
+          <button className="submit-button" onClick={save_reply}>댓글 등록</button>
         </div>
       </div>
     );

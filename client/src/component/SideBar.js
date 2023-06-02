@@ -57,7 +57,7 @@ const SideBar = () => {
         </div>
         {showLogout && (
           <div className="logout-container">
-            <p onClick={logout}>Log Out</p>
+            <p onClick={logout}>로그아웃</p>
           </div>
         )}
       </div>

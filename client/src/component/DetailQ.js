@@ -95,30 +95,51 @@ const DetailQ = ({ Input_time, userId }) => {
     else{
       console.log("No delete");
     }
-    
-    
+  }
+
+  const delete_reply = ()=>{
+    if (window.confirm("삭제하시겠습니까?")) {
+      Axios.post(`${server_url}/delete_reply`, {
+        BQ: reply.BQ,
+        Input_time: reply.Input_time,
+        userId: reply.userId,
+      }).then((response) => {
+        if (response.data.errMessage) {
+          alert(response.data.errMessage);
+          console.log(response.data.err);
+        } else {
+          alert(response.data);
+          window.location.reload();
+        }
+      });
+    }
+    else{
+      console.log("No delete");
+    }
   }
 
   return (
     <div className="detailQ-container">
-      <div className="detailQ-header">
-        <h1>{QuestionTitle}</h1>
-        {solvedStatus ? <h2>완료됨</h2>:<button className="submit-button" onClick={get_solved}>완료하기</button>}
-      </div>
-      <div className="detailQ-board">
-        <div className="detailQ-question">
-          <div className="detailQ-userinfo">
-            <div className="detailQ-username">{QuestionUserName}</div>
-            <div className="detailQ-inputime">{ elapsedFullTime(QuestionTime, realTime) }</div>
-            <div className="detailQ-delete" onClick={delete_BQ}>삭제</div>
-          </div>
-          <div className="detailQ-content">{parse(QuestionContent)}</div>
+      <div className="detailQ-upload">
+        <div className="detailQ-header">
+          <h1>{"Q. " + QuestionTitle}</h1>
+          {solvedStatus ? <h2>해결</h2>:<button className="complete-button" onClick={get_solved}>완료하기</button>}
         </div>
+        <div className="detailQ-userinfo">
+          <div className="detailQ-username-temp">{QuestionUserName}</div>
+          <div className="detailQ-inputime-temp">{ elapsedFullTime(QuestionTime, realTime) }</div>
+          <div className="detailQ-delete" onClick={delete_BQ}>질문 삭제</div>
+        </div>
+        
+        <div className="detailQ-content">{parse(QuestionContent)}</div>
+      </div>
+
+      <div className="detailQ-board">
         {replyList.map((reply)=>(<Comment key={reply.Input_time} reply={reply} mentee={userId} userId={userId} />))}
       </div>
       <div className="reply-section">
         <TextEditor setContent={setReply} />
-        <button className="submit-button" onClick={save_reply}>댓글 등록하기</button>
+        {reply ? <button className="submit-button" onClick={save_reply}>댓글 등록</button> : <button className="unable-button">댓글 등록</button>}
       </div>
     </div>
   );

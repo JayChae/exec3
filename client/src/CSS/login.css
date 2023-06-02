@@ -61,17 +61,17 @@
     background-color: #0062cc;
   }
   
-  .register-btn {
+  .register-link {
     margin-top: 10px;
     text-align: center;
   }
   
-  .register-btn a {
+  .register-link a {
     color: #0077c2;
     text-decoration: none;
   }
   
-  .register-btn a:hover {
+  .register-link a:hover {
     text-decoration: underline;
   }
   

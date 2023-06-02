@@ -34,7 +34,7 @@ const Login = () => {
   return (
     <div className="login-page" style={{ backgroundImage: `url(${background})`}}>
       <div className="login-section">
-        <div className="login-title">LOGIN</div>
+        <div className="login-title">로그인</div>
         <form onSubmit={login}>
           <input
             type="text"
@@ -61,7 +61,7 @@ const Login = () => {
             >
               로그인
             </button>
-          <div className="register-btn">
+          <div className="register-link">
             <Link to="/register">회원가입</Link>
           </div>
         </form>

@@ -49,7 +49,7 @@ function NewBusinessQ() {
     <div className="newBusinessQ-container">
       <div className="newBusinessQ-header">
         <h1 className="write-header">질문 등록</h1>
-        <button className="submit-button" onClick={mission_save}>등록</button>
+        {content ? <button className="submit-button" onClick={mission_save}>등록</button> : <button className="unable-button">등록</button>}
       </div>
       <div className="write-title">
         <input
