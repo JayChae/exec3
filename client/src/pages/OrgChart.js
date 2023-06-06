@@ -108,7 +108,7 @@ const OrgChart = () => {
                 onClick={new_chart}
               >
                 <RiFileAddLine size={25} />
-                <text>새로운 조직도</text>
+                <text>새 조직도</text>
               </button>
               <button
                 className="orgChart-button"

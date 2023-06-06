@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import settings_icon from "../icon/settings.png";
-import exec_logo from "../icon/exec2.png";
+import exec_logo from "../icon/exec2-1.png";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Axios from "axios";
@@ -41,7 +41,7 @@ const SideBar = () => {
       </div>
 
       <Menu>
-        <MenuItem active={window.location.pathname === `/${userId}/QA` } icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 질답 현황 </MenuItem>
+        <MenuItem active={window.location.pathname === `/${userId}/QA` || window.location.pathname.includes(`/${userId}/DetailQ`)} icon={<BiChat/>} component={<Link to={`/${userId}/QA`} />}> 질답 현황 </MenuItem>
         <SubMenu icon={<BiGroup/>} label="팀">
           <MenuItem active={window.location.pathname === `/${userId}/OrgChart` } icon={<BiSitemap/>} component={<Link to={`/${userId}/OrgChart`} />}> 조직도 </MenuItem>
           <MenuItem icon={<BiUser/>}> 팀원 정보 </MenuItem>
