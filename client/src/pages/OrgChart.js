@@ -65,7 +65,7 @@ const OrgChart = () => {
         console.log(response.data.err);
       } else {
         alert(response.data);
-        document.location.href = `/${userId}`;
+        document.location.href = `/${userId}/OrgChart`;
       }
     });
   };

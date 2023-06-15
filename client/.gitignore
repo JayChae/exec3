@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /ckeditor
+yarn.lock
 
 # testing
 /coverage
